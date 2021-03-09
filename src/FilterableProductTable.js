@@ -64,8 +64,10 @@ function SearchBar(props) {
   return (
     <div>
       <input value={filterText} onChange={onFilterTextChange} placeholder="Search..."/>
-      <input type="checkbox" checked={inStockOnly} onChange={onInStockOnlyChange} />
-      <label>Only show products in stock</label>
+      <div>
+        <input type="checkbox" checked={inStockOnly} onChange={onInStockOnlyChange} />
+        <label>Only show products in stock</label>
+      </div>
     </div>
   );
 }
