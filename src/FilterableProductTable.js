@@ -37,7 +37,7 @@ class FilterableProductTable extends React.Component {
 
   render() {
     const categories = this.props.productData.map(product => product.category);
-    const uniqueCategories = [... new Set(categories)];
+    const uniqueCategories = [...new Set(categories)];
     const productData = this.props.productData;
   
     return (
@@ -89,16 +89,14 @@ function ProductTable(props) {
           const categoryRow = <ProductCategoryRow category={category} key={category} />;
           const productRows = productData
             .filter(product => (inStockOnly) ? product.stocked : true)
-            .filter(product => product.category == category)
+            .filter(product => product.category === category)
             .filter(product => product.name.toLowerCase().includes(filterText.toLowerCase()))
             .map(product => <ProductRow name={product.name} 
                                         price={product.price} 
                                         stocked={product.stocked} 
                                         key={product.name} />);
 
-          if (productRows.length > 0) {
-            return [categoryRow, productRows];
-          }
+          return (productRows.length > 0) ? [categoryRow, productRows] : null;
         })
       }
     </table>
