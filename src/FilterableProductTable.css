@@ -1,0 +1,11 @@
+.category {
+    font-weight: bold
+}
+
+.outOfStock {
+    color: red
+}
+
+.productTable > tr > th {
+    text-align: left
+}
