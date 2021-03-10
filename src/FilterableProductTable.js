@@ -23,7 +23,6 @@ function FilterableProductTable(props) {
     setInStockOnly(!inStockOnly);
   }
 
-  
   const productData = props.productData;
 
   return (
@@ -81,7 +80,7 @@ function ProductTable(props) {
                                         stocked={product.stocked} 
                                         key={product.name} />);
 
-          return (productRows.length > 0) ? [categoryRow, productRows] : null;
+          return (productRows.length > 0) ? <>{categoryRow} {productRows}</> : null;
         })
       }
     </table>
