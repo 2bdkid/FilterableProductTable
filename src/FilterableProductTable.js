@@ -7,52 +7,36 @@
 //     {category: "Electronics", price: "$199.99", stocked: true, name: "Nexus 7"}
 // ];
 
-import React from "react";
+import React, { useState } from "react";
 import './FilterableProductTable.css';
 
-class FilterableProductTable extends React.Component {
+function FilterableProductTable(props) {
+  const [filterText, setFilterText] = useState('');
+  const [inStockOnly, setInStockOnly] = useState(false);
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      filterText: '',
-      inStockOnly: false,
-    }
-    this.handleFilterTextUpdate = this.handleFilterTextUpdate.bind(this);
-    this.handleInStockOnlyUpdate = this.handleInStockOnlyUpdate.bind(this);
-  }
-
-  handleFilterTextUpdate(event) {
+  function handleFilterTextUpdate(event) {
     const filterText = event.target.value;
-    this.setState({
-      filterText: filterText
-    });
+    setFilterText(filterText);
   }
 
-  handleInStockOnlyUpdate() {
-    this.setState(state => {
-      return { inStockOnly: !state.inStockOnly }
-    });
+  function handleInStockOnlyUpdate() {
+    setInStockOnly(!inStockOnly);
   }
 
-  render() {
-    const categories = this.props.productData.map(product => product.category);
-    const uniqueCategories = [...new Set(categories)];
-    const productData = this.props.productData;
   
-    return (
-      <div>
-        <SearchBar filterText={this.state.filterText} 
-                   inStockOnly={this.state.inStockOnly} 
-                   onFilterTextChange={this.handleFilterTextUpdate} 
-                   onInStockOnlyChange={this.handleInStockOnlyUpdate} />
-        <ProductTable categories={uniqueCategories} 
-                      productData={productData} 
-                      inStockOnly={this.state.inStockOnly} 
-                      filterText={this.state.filterText} />
-      </div>
-    );
-  }
+  const productData = props.productData;
+
+  return (
+    <div>
+      <SearchBar filterText={filterText} 
+                 inStockOnly={inStockOnly} 
+                 onFilterTextChange={handleFilterTextUpdate} 
+                 onInStockOnlyChange={handleInStockOnlyUpdate} />
+      <ProductTable productData={productData} 
+                    inStockOnly={inStockOnly} 
+                    filterText={filterText} />
+    </div>
+  );
 }
 
 function SearchBar(props) {
@@ -73,10 +57,11 @@ function SearchBar(props) {
 }
 
 function ProductTable(props) {
-  const categories = props.categories;
   const productData = props.productData;
   const inStockOnly = props.inStockOnly;
   const filterText = props.filterText;
+  const categories = props.productData.map(product => product.category);
+  const uniqueCategories = [...new Set(categories)];
 
   return (
     <table class="productTable">
@@ -85,7 +70,7 @@ function ProductTable(props) {
         <th>Price</th>
       </tr>
       {
-        categories.map(category => {
+        uniqueCategories.map(category => {
           const categoryRow = <ProductCategoryRow category={category} key={category} />;
           const productRows = productData
             .filter(product => (inStockOnly) ? product.stocked : true)
